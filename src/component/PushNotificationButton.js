@@ -6,7 +6,7 @@ function PushNotificationButton() {
             navigator.serviceWorker.ready.then(function(registration) {
                 registration.pushManager.subscribe({
                     userVisibleOnly: true,
-                    applicationServerKey: 'YOUR_APPLICATION_SERVER_KEY'
+                    applicationServerKey: 'BLR6jMQ3R5NlQcQzXc0vFBtArPl4iFfC9kq0O34AZXGMCgEKfI2lKsKNWEcnKN8c3QfW6ba3wHttTk6byecz-6w'
                 }).then(function(subscription) {
                     console.log('Push notification subscription successful: ', subscription);
                     fetch('/subscribe', {
