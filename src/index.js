@@ -30,8 +30,6 @@ ReactDOM.render(<React.StrictMode>
 </React.StrictMode>,
     document.getElementById('root'));
 
-ReactDOM.render(<App />, document.getElementById('root'));
-
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.ready.then(registration => {
         registration.pushManager.subscribe({
