@@ -30,8 +30,10 @@ ReactDOM.render(<React.StrictMode>
 </React.StrictMode>,
     document.getElementById('root'));
 
+//reference đến nơi serviceWorker hoạt động
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.ready.then(registration => {
+        //đk thông báo
         registration.pushManager.subscribe({
             userVisibleOnly: true,
             applicationServerKey: process.env.VAPID_PUBLIC_KEY,
@@ -45,8 +47,16 @@ if ('serviceWorker' in navigator) {
     });
 }
 
+
+// kiểm tra xem trình duyệt có hỗ trợ serviceWorker hay không
 window.addEventListener('load', () => {
     if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/sw.js');
+        navigator.serviceWorker.register('/sw.js')
+            .then(registration => {
+            console.log('ServiceWorker registration successful with scope: ', registration.scope);
+        })
+            .catch(err => {
+                console.log('ServiceWorker registration failed: ', err);
+            });
     }
 });

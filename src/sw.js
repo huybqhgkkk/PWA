@@ -18,6 +18,9 @@
 //         clients.openWindow(event.notification.data.url)
 //     );
 // });
+
+//Cài đặt Cache API
+
 const CACHE_NAME = 'my-app-cache-v1';
 const urlsToCache = [
     '/',
@@ -35,6 +38,7 @@ self.addEventListener('install', event => {
     );
 });
 
+//Sử dụng Cache API để tải nội dung nhanh hơn
 self.addEventListener('fetch', event => {
     event.respondWith(
         caches.match(event.request)
@@ -46,3 +50,18 @@ self.addEventListener('fetch', event => {
             })
     );
 });
+
+// xử lý thông báo đẩy
+// self.addEventListener('push', function(event) {
+//     console.log('Push notification received', event);
+//
+//     var title = 'Example Push Notification';
+//     var options = {
+//         body: 'This is a push notification example',
+//         icon: 'path/to/icon.png',
+//         badge: 'path/to/badge.png'
+//     };
+//
+//     event.waitUntil(self.registration.showNotification(title, options));
+// });
+

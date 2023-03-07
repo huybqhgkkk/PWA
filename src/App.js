@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {Routes, Route} from "react-router-dom";
 import Header from "./component/Header";
 import About from "./component/About";
@@ -9,6 +9,8 @@ import Category from "./component/Category";
 function App() {
     const [isInstalled, setIsInstalled] = useState(false);
     const [installPrompt, setInstallPrompt] = useState(null);
+    const [stream, setStream] = useState(null);
+    const videoRef = useRef();
 
     useEffect(() => {
         window.addEventListener('beforeinstallprompt', handleInstallPrompt);
@@ -16,6 +18,25 @@ function App() {
             window.removeEventListener('beforeinstallprompt', handleInstallPrompt);
         };
     }, []);
+
+    useEffect(() => {
+        if (stream) {
+            videoRef.current.srcObject = stream;
+        }
+    }, [stream]);
+
+    async function handleCameraClick() {
+        try {
+            // Truy cập thiết bị camera
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+
+            // Lưu trữ stream vào trạng thái của ứng dụng
+            setStream(stream);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
 
     function handleInstallPrompt(event) {
         // Prevent the default behavior of the event
@@ -36,7 +57,6 @@ function App() {
             } else {
                 console.log('User dismissed the install prompt');
             }
-
             // Reset the install prompt state
             setInstallPrompt(null);
         });
@@ -67,6 +87,27 @@ function App() {
         }
     };
 
+    function handlePushNotification() {
+       //kiểm tra permission
+        if (Notification.permission === 'granted') {
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.ready.then(function (registration) {
+                    registration.showNotification('Hello, world!');
+                });
+            }
+        } else if (Notification.permission !== 'denied') {
+            Notification.requestPermission().then(permission => {
+                if (permission === 'granted') {
+                    if ('serviceWorker' in navigator) {
+                        navigator.serviceWorker.ready.then(function (registration) {
+                            registration.showNotification('Hello, world!');
+                        });
+                    }
+                }
+            });
+        }
+    }
+
     return (
         <div>
             <h1>Welcome to My PWA</h1>
@@ -81,6 +122,15 @@ function App() {
                     Install the app
                 </button>
             )}
+
+            <div>
+                <h1>My PWA</h1>
+                <button onClick={handleCameraClick}>Open Camera</button>
+                <video ref={videoRef} autoPlay />
+            </div>
+
+            <button onClick={handlePushNotification}>Send Push Notification</button>
+
             <Header/>
 
             <Routes>
@@ -96,7 +146,7 @@ function App() {
             </Routes>
 
             <footer className="container">
-                copy right 2022 | <a>Red30 Tech</a>
+                copy right 2023 | <a>Huykkk</a>
             </footer>
         </div>
     );
