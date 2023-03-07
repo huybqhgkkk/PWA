@@ -8,6 +8,39 @@ import Category from "./component/Category";
 
 function App() {
     const [isInstalled, setIsInstalled] = useState(false);
+    const [installPrompt, setInstallPrompt] = useState(null);
+
+    useEffect(() => {
+        window.addEventListener('beforeinstallprompt', handleInstallPrompt);
+        return () => {
+            window.removeEventListener('beforeinstallprompt', handleInstallPrompt);
+        };
+    }, []);
+
+    function handleInstallPrompt(event) {
+        // Prevent the default behavior of the event
+        event.preventDefault();
+
+        // Save the install prompt event to state
+        setInstallPrompt(event);
+    }
+
+    function handleInstallClick() {
+        // Show the install prompt to the user
+        installPrompt.prompt();
+
+        // Wait for the user to respond to the prompt
+        installPrompt.userChoice.then((choiceResult) => {
+            if (choiceResult.outcome === 'accepted') {
+                console.log('User accepted the install prompt');
+            } else {
+                console.log('User dismissed the install prompt');
+            }
+
+            // Reset the install prompt state
+            setInstallPrompt(null);
+        });
+    }
 
     useEffect(() => {
         const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
@@ -40,6 +73,12 @@ function App() {
             {!isInstalled && (
                 <button onClick={handleAddToHomeScreen}>
                     Add to Home Screen
+                </button>
+            )}
+
+            {installPrompt && (
+                <button onClick={handleInstallClick}>
+                    Install the app
                 </button>
             )}
             <Header/>
