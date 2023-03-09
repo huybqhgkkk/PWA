@@ -5,6 +5,7 @@ import About from "./component/About";
 import Home from "./component/Home";
 import Categories from "./component/Categories";
 import Category from "./component/Category";
+import ScrollToTopButton from './component/ScrollToTopButton';
 
 function App() {
     const [isInstalled, setIsInstalled] = useState(false);
@@ -48,14 +49,15 @@ function App() {
 
     function handleInstallClick() {
         // Show the install prompt to the user
+
         installPrompt.prompt();
 
         // Wait for the user to respond to the prompt
         installPrompt.userChoice.then((choiceResult) => {
             if (choiceResult.outcome === 'accepted') {
-                console.log('User accepted the install prompt');
+                new Notification("Chào huykkk");
             } else {
-                console.log('User dismissed the install prompt');
+                new Notification("Chào huykkk");
             }
             // Reset the install prompt state
             setInstallPrompt(null);
@@ -87,19 +89,48 @@ function App() {
         }
     };
 
+    // function handlePushNotification() {
+    //    //kiểm tra permission
+    //     if (Notification.permission === 'granted') {
+    //         if ('serviceWorker' in navigator) {
+    //             navigator.serviceWorker.ready.then(function (registration) {
+    //                 registration.showNotification('Hello, world!');
+    //             });
+    //         }
+    //     } else if (Notification.permission !== 'denied') {
+    //         Notification.requestPermission().then(permission => {
+    //             if (permission === 'granted') {
+    //                 if ('serviceWorker' in navigator) {
+    //                     navigator.serviceWorker.ready.then(function (registration) {
+    //                         registration.showNotification('Hello, world!');
+    //                     });
+    //                 }
+    //             }
+    //         });
+    //     }
+    // }
+
     function handlePushNotification() {
-       //kiểm tra permission
+        // Check if permission has been granted
         if (Notification.permission === 'granted') {
+            // Check if service workers are supported
             if ('serviceWorker' in navigator) {
+                // Get the registration for the service worker
                 navigator.serviceWorker.ready.then(function (registration) {
+                    // Show the notification
                     registration.showNotification('Hello, world!');
                 });
             }
-        } else if (Notification.permission !== 'denied') {
+        }
+        // If permission is not granted or denied, request permission
+        else if (Notification.permission !== 'denied') {
             Notification.requestPermission().then(permission => {
                 if (permission === 'granted') {
+                    // Check if service workers are supported
                     if ('serviceWorker' in navigator) {
+                        // Get the registration for the service worker
                         navigator.serviceWorker.ready.then(function (registration) {
+                            // Show the notification
                             registration.showNotification('Hello, world!');
                         });
                     }
@@ -111,11 +142,11 @@ function App() {
     return (
         <div>
             <h1>Welcome to My PWA</h1>
-            {!isInstalled && (
-                <button onClick={handleAddToHomeScreen}>
-                    Add to Home Screen
-                </button>
-            )}
+            {/*{!isInstalled && (*/}
+            {/*    <button onClick={handleAddToHomeScreen}>*/}
+            {/*        Add to Home Screen*/}
+            {/*    </button>*/}
+            {/*)}*/}
 
             {installPrompt && (
                 <button onClick={handleInstallClick}>
@@ -123,11 +154,11 @@ function App() {
                 </button>
             )}
 
-            <div>
-                <h1>My PWA</h1>
-                <button onClick={handleCameraClick}>Open Camera</button>
-                <video ref={videoRef} autoPlay />
-            </div>
+            {/*<div>*/}
+            {/*    <h1>My PWA</h1>*/}
+            {/*    <button onClick={handleCameraClick}>Open Camera</button>*/}
+            {/*    <video ref={videoRef} autoPlay />*/}
+            {/*</div>*/}
 
             <button onClick={handlePushNotification}>Send Push Notification</button>
 
@@ -144,6 +175,7 @@ function App() {
                     element={<h1 className="not-found">Page Not Found</h1>}
                 />
             </Routes>
+            <ScrollToTopButton />
 
             <footer className="container">
                 copy right 2023 | <a>Huykkk</a>
