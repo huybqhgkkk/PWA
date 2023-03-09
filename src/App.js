@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {Routes, Route} from "react-router-dom";
 import Header from "./component/Header";
 import About from "./component/About";
@@ -11,6 +11,7 @@ function App() {
     const [isInstalled, setIsInstalled] = useState(false);
     const [installPrompt, setInstallPrompt] = useState(null);
     const [stream, setStream] = useState(null);
+    const [headerFixed, setHeaderFixed] = useState(false);
     const videoRef = useRef();
 
     useEffect(() => {
@@ -29,7 +30,7 @@ function App() {
     async function handleCameraClick() {
         try {
             // Truy cập thiết bị camera
-            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            const stream = await navigator.mediaDevices.getUserMedia({video: true});
 
             // Lưu trữ stream vào trạng thái của ứng dụng
             setStream(stream);
@@ -139,6 +140,22 @@ function App() {
         }
     }
 
+    useEffect(() => {
+        const handleScroll = () => {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            if (scrollTop > 0) {
+                setHeaderFixed(true);
+            } else {
+                setHeaderFixed(false);
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
+
     return (
         <div>
             <h1>Welcome to My PWA</h1>
@@ -161,8 +178,10 @@ function App() {
             {/*</div>*/}
 
             <button onClick={handlePushNotification}>Send Push Notification</button>
+            <div className={headerFixed ? 'header-fixed' : ''}>
+                <Header/>
+            </div>
 
-            <Header/>
 
             <Routes>
                 <Route path="/" element={<Home title="Welcome to Red30 Tech"/>}/>
@@ -175,7 +194,7 @@ function App() {
                     element={<h1 className="not-found">Page Not Found</h1>}
                 />
             </Routes>
-            <ScrollToTopButton />
+            <ScrollToTopButton/>
 
             <footer className="container">
                 copy right 2023 | <a>Huykkk</a>

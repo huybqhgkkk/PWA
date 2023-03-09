@@ -203,9 +203,10 @@ footer.container {
 }
 
 .container {
-  width: 90%;
+  width: 100%;
   max-width: 800px;
   margin: 0 auto;
+
 }
 
 /* media queries */
@@ -239,6 +240,25 @@ footer.container {
   }
   form {
     width: 60%;
+  }
+
+  .header {
+    position: relative;
+    z-index: 1;
+    background-color: #fff;
+    padding: 20px;
+    text-align: center;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .header-fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 9999;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
+    background: aliceblue;
   }
 }
 
@@ -324,3 +344,5 @@ code {
   opacity: 1;
   transform: translateX(0);
 }
+
+
