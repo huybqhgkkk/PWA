@@ -90,27 +90,6 @@ function App() {
         }
     };
 
-    // function handlePushNotification() {
-    //    //kiểm tra permission
-    //     if (Notification.permission === 'granted') {
-    //         if ('serviceWorker' in navigator) {
-    //             navigator.serviceWorker.ready.then(function (registration) {
-    //                 registration.showNotification('Hello, world!');
-    //             });
-    //         }
-    //     } else if (Notification.permission !== 'denied') {
-    //         Notification.requestPermission().then(permission => {
-    //             if (permission === 'granted') {
-    //                 if ('serviceWorker' in navigator) {
-    //                     navigator.serviceWorker.ready.then(function (registration) {
-    //                         registration.showNotification('Hello, world!');
-    //                     });
-    //                 }
-    //             }
-    //         });
-    //     }
-    // }
-
     function handlePushNotification() {
         // Check if permission has been granted
         if (Notification.permission === 'granted') {
